@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14181A">
+<title>Ecuador — Loop, Chimborazo, Baños</title>
+<style>
+  :root{
+    --basalt:#14181A;
+    --ash:#E8E4DA;
+    --ash-dim:#C9C3B6;
+    --slate:#7C8288;
+    --pajonal:#C9A227;
+    --lake:#1B8377;
+    --alert:#C4552F;
+    --line:rgba(232,228,218,.14);
+    --display:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --body:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--basalt);color:var(--ash);
+    font-family:var(--body);font-size:16px;line-height:1.5;
+    padding-bottom:env(safe-area-inset-bottom);
+    -webkit-text-size-adjust:100%;
+  }
+
+  header{padding:26px 20px 14px;padding-top:calc(26px + env(safe-area-inset-top));border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pajonal);margin:0 0 8px}
+  h1{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.02;letter-spacing:-.02em;margin:0 0 10px;text-transform:uppercase}
+  h1 em{font-style:normal;color:var(--lake)}
+  .dek{margin:0;font-size:13.5px;color:var(--slate);line-height:1.45}
+
+  /* ---------- altitude ---------- */
+  .profile{padding:18px 20px 10px;border-bottom:1px solid var(--line)}
+  .profile-label{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);display:flex;justify-content:space-between;margin-bottom:10px}
+  svg.elev{width:100%;height:120px;display:block;overflow:visible}
+  .elev .fill{fill:url(#g1)}
+  .elev .sleepline{fill:none;stroke:var(--lake);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .elev .maxline{fill:none;stroke:var(--pajonal);stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:4 2.5}
+  .elev .dot{fill:var(--pajonal)}
+  .elev .lab{font-family:var(--display);font-size:8.5px;font-weight:700;fill:var(--pajonal);letter-spacing:.04em}
+  .elev .lab.low{fill:var(--lake)}
+  .elev .grid{stroke:var(--line);stroke-width:1}
+  .elev .gridlab{font-family:var(--display);font-size:7.5px;font-weight:600;fill:var(--slate)}
+  .elev .daynum{font-family:var(--display);font-size:8px;font-weight:600;fill:var(--slate)}
+  .key{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--slate);margin-top:6px}
+  .key span{display:flex;align-items:center;gap:6px}
+  .key i{width:14px;height:0;border-top:2px solid;display:inline-block}
+  .key .k1 i{border-color:var(--pajonal);border-top-style:dashed}
+  .key .k2 i{border-color:var(--lake)}
+
+  /* ---------- tabs, no script ---------- */
+  .tabs{position:relative}
+  .tabs > input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  nav{position:sticky;top:0;z-index:20;display:flex;background:var(--basalt);border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav label{
+    flex:1 0 auto;padding:15px 14px 13px;cursor:pointer;white-space:nowrap;text-align:center;
+    font-family:var(--display);font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--slate);border-bottom:2px solid transparent;
+  }
+  .tabs > section{display:none;padding:0 0 56px}
+  #t1:checked ~ nav label[for=t1],#t2:checked ~ nav label[for=t2],
+  #t3:checked ~ nav label[for=t3],#t4:checked ~ nav label[for=t4],
+  #t5:checked ~ nav label[for=t5]{color:var(--ash);border-bottom-color:var(--pajonal)}
+  #t1:focus ~ nav label[for=t1],#t2:focus ~ nav label[for=t2],
+  #t3:focus ~ nav label[for=t3],#t4:focus ~ nav label[for=t4],
+  #t5:focus ~ nav label[for=t5]{outline:2px solid var(--lake);outline-offset:-3px}
+  #t1:checked ~ #s1,#t2:checked ~ #s2,#t3:checked ~ #s3,
+  #t4:checked ~ #s4,#t5:checked ~ #s5{display:block}
+
+  /* ---------- day cards, no script ---------- */
+  details.day{border-bottom:1px solid var(--line)}
+  details.day > summary{
+    display:flex;gap:14px;align-items:flex-start;padding:18px 20px;cursor:pointer;list-style:none;
+  }
+  details.day > summary::-webkit-details-marker{display:none}
+  details.day > summary:focus-visible{outline:2px solid var(--lake);outline-offset:-3px}
+  .num{font-family:var(--display);font-weight:800;font-size:26px;line-height:1;color:var(--slate);min-width:34px;letter-spacing:-.03em;padding-top:2px}
+  details.day.flex .num{color:var(--pajonal)}
+  .day-main{flex:1;min-width:0}
+  .title{display:block;font-family:var(--display);font-weight:700;font-size:16px;line-height:1.2;letter-spacing:-.01em;margin:0 0 5px}
+  .meta{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:12.5px;color:var(--slate)}
+  .meta b{font-weight:600;color:var(--ash-dim)}
+  .chev{width:11px;height:11px;border-right:1.8px solid var(--slate);border-bottom:1.8px solid var(--slate);transform:rotate(45deg);margin-top:9px;flex:none}
+  details.day[open] > summary .chev{transform:rotate(-135deg)}
+  .dbody{padding:0 20px 20px 68px}
+  .dbody p{margin:0 0 10px;font-size:14px;color:var(--ash-dim);line-height:1.55}
+  .dbody p:last-child{margin-bottom:0}
+  .dbody p.gate{border-left:2px solid var(--alert);padding-left:11px;color:var(--ash)}
+  .tag{display:inline-block;font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px;border-radius:2px;margin-bottom:9px}
+  .tag.bus{background:rgba(27,131,119,.18);color:#5FCBBD}
+  .tag.foot{background:rgba(201,162,39,.16);color:var(--pajonal)}
+  .tag.flexi{background:rgba(201,162,39,.16);color:var(--pajonal)}
+  details.day.flex{background:rgba(201,162,39,.045)}
+
+  .bandnote{padding:14px 20px;background:rgba(201,162,39,.08);border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12.5px;color:var(--pajonal);line-height:1.5}
+  .bandnote b{font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:10.5px;display:block;margin-bottom:4px}
+  .alertband{padding:15px 20px;background:rgba(196,85,47,.11);border-bottom:1px solid var(--line);font-size:13px;color:var(--ash-dim);line-height:1.5}
+  .alertband b{font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:10.5px;display:block;margin-bottom:5px;color:var(--alert)}
+  .alertband p{margin:0 0 8px}
+  .alertband p:last-child{margin-bottom:0}
+
+  .block{padding:22px 20px;border-bottom:1px solid var(--line)}
+  .block h2{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--pajonal);margin:0 0 4px}
+  .block .sub{margin:0 0 16px;font-size:13px;color:var(--slate)}
+  .block p.note{font-size:13px;color:var(--ash-dim);line-height:1.55;margin:0 0 10px}
+  .block p.note:last-child{margin-bottom:0}
+
+  .rule{display:grid;grid-template-columns:1fr;gap:5px;padding:14px 0;border-top:1px solid var(--line)}
+  .rule:first-of-type{border-top:0;padding-top:0}
+  .rule .if{font-family:var(--display);font-weight:700;font-size:14px;line-height:1.25}
+  .rule .then{font-size:13.5px;color:var(--ash-dim);line-height:1.5}
+  .rule .res{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lake)}
+  .rule.stop .if,.rule.stop .res{color:var(--alert)}
+
+  .opt{padding:13px 0;border-top:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
+  .opt:first-of-type{border-top:0}
+  .opt .alt{font-family:var(--display);font-weight:800;font-size:13px;color:var(--pajonal);min-width:62px;flex:none;letter-spacing:-.01em}
+  .opt .who{flex:1;min-width:0}
+  .opt .nm{display:block;font-family:var(--display);font-weight:700;font-size:14.5px;line-height:1.25;margin-bottom:3px}
+  .opt .ef{display:block;font-size:12.5px;color:var(--slate);line-height:1.45}
+  .opt .gd{display:block;font-size:11px;color:var(--lake);margin-top:3px;font-weight:600}
+
+  .leg{padding:16px 0;border-top:1px solid var(--line)}
+  .leg:first-of-type{border-top:0;padding-top:0}
+  .leg .route{font-family:var(--display);font-weight:700;font-size:14.5px;line-height:1.25;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+  .leg .route .dayref{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)}
+  .facts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--slate);margin-bottom:7px}
+  .facts b{color:var(--ash-dim);font-weight:600}
+  .leg .how{font-size:13px;color:var(--ash-dim);line-height:1.5;margin:0 0 7px}
+  .leg .how:last-child{margin-bottom:0}
+  a{color:var(--lake);text-decoration:none;border-bottom:1px solid rgba(27,131,119,.45)}
+
+  .night{padding:15px 0;border-top:1px solid var(--line)}
+  .night:first-of-type{border-top:0;padding-top:0}
+  .night .top{display:flex;gap:10px;align-items:baseline;margin-bottom:5px;flex-wrap:wrap}
+  .night .n{font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--slate);min-width:52px}
+  .night .place{font-family:var(--display);font-weight:700;font-size:14.5px;line-height:1.25;flex:1;min-width:0}
+  .status{font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 7px;border-radius:2px;flex:none}
+  .status.lock{background:rgba(196,85,47,.16);color:#E08A66}
+  .status.hold{background:rgba(201,162,39,.14);color:var(--pajonal)}
+  .status.open{background:rgba(27,131,119,.16);color:#5FCBBD}
+  .night .det{font-size:13px;color:var(--ash-dim);line-height:1.5;margin:0 0 5px}
+  .night .alts{font-size:12.5px;color:var(--slate);line-height:1.45;margin:0}
+
+  .ask{padding:11px 0;border-top:1px solid var(--line);display:flex;gap:11px;font-size:13.5px;color:var(--ash-dim);line-height:1.45}
+  .ask:first-of-type{border-top:0}
+  .ask .q{font-family:var(--display);font-weight:800;font-size:11px;color:var(--lake);min-width:18px;flex:none;padding-top:2px}
+
+  .listhead{padding:22px 20px 0}
+  .listhead h2{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--pajonal);margin:0 0 4px}
+  .listhead .sub{margin:0;font-size:13px;color:var(--slate)}
+  .listwrap{padding:8px 20px 22px;border-bottom:1px solid var(--line)}
+  .check{display:flex;gap:13px;padding:14px 0;border-top:1px solid var(--line);cursor:pointer;align-items:flex-start}
+  .check:first-of-type{border-top:0}
+  .check input{appearance:none;-webkit-appearance:none;width:20px;height:20px;flex:none;margin:1px 0 0;border:1.8px solid var(--slate);border-radius:3px;cursor:pointer;position:relative}
+  .check input:checked{background:var(--lake);border-color:var(--lake)}
+  .check input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid var(--basalt);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .check .txt{flex:1;min-width:0}
+  .check .it{display:block;font-size:14.5px;font-weight:500;line-height:1.35;margin-bottom:3px}
+  .check .wy{display:block;font-size:12.5px;color:var(--slate);line-height:1.45}
+  .check .foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;align-items:center}
+  .check .wn{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pajonal)}
+  .check .owner{font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);border:1px solid var(--line);padding:2px 6px;border-radius:2px}
+  .check input:checked ~ .txt .it{color:var(--slate);text-decoration:line-through}
+
+  footer{padding:22px 20px 40px;font-size:11.5px;color:var(--slate);line-height:1.55}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">September 2026 · 11 days · the two of us</p>
+  <h1>Quilotoa Loop<br>Chimborazo<br><em>Baños</em></h1>
+  <p class="dek">Four days walking hostel to hostel, a night on the crater rim, then 5,000 m and a long ride down. Days 7–10 stay loose. Works offline — no internet needed once saved.</p>
+</header>
+
+<div class="profile">
+  <div class="profile-label"><span>Altitude</span><span>metres</span></div>
+  <svg class="elev" viewBox="0 0 340 100" role="img" aria-label="Altitude by day. Dashed gold line is the highest point reached each day, peaking at 5,100 m on day 7. Solid teal line is where we sleep, peaking at 3,900 m on day 5.">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1B8377" stop-opacity="0.34"/>
+        <stop offset="100%" stop-color="#1B8377" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+
+    <line class="grid" x1="8" y1="84" x2="336" y2="84"/>
+    <line class="grid" x1="8" y1="55.1" x2="336" y2="55.1"/>
+    <line class="grid" x1="8" y1="26.3" x2="336" y2="26.3"/>
+    <text class="gridlab" x="336" y="82" text-anchor="end">1,500</text>
+    <text class="gridlab" x="336" y="53" text-anchor="end">3,000</text>
+    <text class="gridlab" x="336" y="24" text-anchor="end">4,500</text>
+
+    <path class="fill" d="M10,57.7 L42,55.8 L74,50.9 L106,50.9 L138,37.3 L170,59.7 L202,59.7 L234,78.2 L266,78.2 L298,78.2 L298,84 L10,84 Z"/>
+    <path class="maxline" d="M10,57.7 L42,55.8 L74,49.0 L106,50.9 L138,37.0 L170,37.3 L202,13.9 L234,59.7 L266,78.2 L298,78.2 L330,57.7"/>
+    <path class="sleepline" d="M10,57.7 L42,55.8 L74,50.9 L106,50.9 L138,37.3 L170,59.7 L202,59.7 L234,78.2 L266,78.2 L298,78.2"/>
+
+    <circle class="dot" cx="202" cy="13.9" r="3"/>
+    <text class="lab" x="202" y="8" text-anchor="middle">5,100</text>
+    <circle class="dot" cx="138" cy="37" r="2.4"/>
+    <text class="lab low" x="138" y="32" text-anchor="middle">3,900</text>
+
+    <text class="daynum" x="10" y="95" text-anchor="middle">D1</text>
+    <text class="daynum" x="74" y="95" text-anchor="middle">D3</text>
+    <text class="daynum" x="138" y="95" text-anchor="middle">D5</text>
+    <text class="daynum" x="202" y="95" text-anchor="middle">D7</text>
+    <text class="daynum" x="266" y="95" text-anchor="middle">D9</text>
+    <text class="daynum" x="330" y="95" text-anchor="middle">D11</text>
+  </svg>
+  <div class="key">
+    <span class="k1"><i></i>Highest reached</span>
+    <span class="k2"><i></i>Where we sleep</span>
+  </div>
+</div>
+
+<div class="tabs">
+<input type="radio" name="tab" id="t1" checked>
+<input type="radio" name="tab" id="t2">
+<input type="radio" name="tab" id="t3">
+<input type="radio" name="tab" id="t4">
+<input type="radio" name="tab" id="t5">
+
+<nav>
+  <label for="t1">Days</label>
+  <label for="t2">Transport</label>
+  <label for="t3">Stay</label>
+  <label for="t4">Chimborazo</label>
+  <label for="t5">Prep</label>
+</nav>
+
+<!-- ================= DAYS ================= -->
+<section id="s1">
+
+  <div class="alertband">
+    <b>Unresolved · flights decide the shape</b>
+    <p>Eleven days on the ground assumes a morning arrival and an evening departure. We don't have either yet. Day 1 now runs all the way to Sigchos, which needs us in Latacunga by mid-afternoon — a late landing kills it and we fall back to a Latacunga night.</p>
+    <p>Book flights first, then cut in this order: third Baños day, then the Chimborazo re-roll day, then the Loop rest day. Protect the rest day if we can — it does acclimatisation work nothing else does.</p>
+  </div>
+
+  <details class="day">
+    <summary>
+      <span class="num">1</span>
+      <span class="day-main">
+        <span class="title">Land Quito, bags in Latacunga, on to Sigchos</span>
+        <span class="meta"><span>Sleep <b>Sigchos · 2,850 m</b></span><span>Transit <b>5–6h</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag bus">Bus</span>
+      <p>Airport to Quitumbe on the COSIBO city bus, $2, 60–90 minutes. Quitumbe to Latacunga, roughly 2 hours. Drop the non-trek bags at the Latacunga hostel — arrange this in advance, we're not staying — then straight onto a Sigchos bus, another 1.5–2 hours.</p>
+      <p>Waking up in Sigchos means Day 2 starts on foot at 08:00 instead of after a two-hour bus. It's the single biggest improvement available to the front half.</p>
+      <p class="gate">Gate: we need to be at Latacunga terminal by roughly 15:00 to make this work. If the flight lands after about 10:00, sleep in Latacunga instead and take the 06:00 or 08:00 bus to Sigchos on Day 2. If we clear customs after 18:00, sleep in Quito — the airport bus stops around 22:00.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">2</span>
+      <span class="day-main">
+        <span class="title">Sigchos → Isinliví</span>
+        <span class="meta"><span>Sleep <b>Isinliví · 2,950 m</b></span><span>Walk <b>4–5h · 10 km</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag foot">On foot</span>
+      <p>The gentlest day of the Loop: a long descent to the Toachi river, then a steep climb to Isinliví. About 440 m of ascent. Signage runs clearer in this direction than the reverse.</p>
+      <p>Net altitude gain for the day is tiny — 100 m between the two villages — which is exactly what a first day should look like.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">3</span>
+      <span class="day-main">
+        <span class="title">Isinliví → Chugchilán</span>
+        <span class="meta"><span>Sleep <b>Chugchilán · 3,200 m</b></span><span>Walk <b>5–7h · 12 km</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag foot">On foot</span>
+      <p>Down to the valley floor, along the river, then a steep canyon wall up to a viewpoint around 3,300 m. Roughly 790 m of ascent — the biggest climbing day until Quilotoa.</p>
+      <p>First night above 3,000 m for both of us. Compare notes at dinner: headache, appetite, sleep quality.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">4</span>
+      <span class="day-main">
+        <span class="title">Rest day</span>
+        <span class="meta"><span>Sleep <b>Chugchilán · 3,200 m</b></span><span><b>Nothing</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <p>Doing nothing is the point. It also does real work as acclimatisation for the higher nights ahead — this is the day that makes Day 7 reasonable rather than reckless.</p>
+      <p>Morning resting readings from both of us. Baseline for the rest of the trip.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">5</span>
+      <span class="day-main">
+        <span class="title">Chugchilán → Quilotoa</span>
+        <span class="meta"><span>Sleep <b>Crater rim · 3,900 m</b></span><span>Walk <b>5–7h · 13 km</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag foot">On foot</span>
+      <p>The hardest day: about 975 m of ascent finishing with a sustained climb to the rim at 3,914 m. Arrive early afternoon for sunset. Sunrise the next morning is the reason this night is in the plan.</p>
+      <p>Highest sleep of the trip and a 700 m jump from Chugchilán. Confirm heating or enough blankets when we book — it is genuinely cold up there.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">6</span>
+      <span class="day-main">
+        <span class="title">Sunrise on the rim, then south to Riobamba</span>
+        <span class="meta"><span>Sleep <b>Riobamba · 2,750 m</b></span><span>Bus <b>~4h total</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag bus">Bus</span>
+      <p>Quilotoa → Latacunga runs frequently, about 2–2.5 hours. Then Latacunga → Riobamba, roughly 1.5–2 hours. Collect the stored bags on the way through.</p>
+      <p class="gate">Evening tasks, both of us: check the Chimborazo forecast, confirm the operator pickup time, take resting readings, and agree out loud whether tomorrow is on.</p>
+      <p>We drop 1,150 m tonight. That's normal and it doesn't undo the acclimatisation — going high for the day and sleeping low is good practice. The Day 7 risk is hours of exertion at 5,000 m, not tonight's altitude. See the Stay tab if we want to sleep at 4,000 m instead.</p>
+    </div>
+  </details>
+
+  <div class="bandnote">
+    <b>Flex block · Days 7–10</b>
+    Four days shared between Chimborazo and Baños. Chimborazo gets first claim; Baños absorbs whatever is left. Decide on the evening of Day 7.
+  </div>
+
+  <details class="day flex">
+    <summary>
+      <span class="num">7</span>
+      <span class="day-main">
+        <span class="title">Chimborazo — hike and bike</span>
+        <span class="meta"><span>Sleep <b>Riobamba · 2,750 m</b></span><span>High <b>5,100 m</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag foot">Big day</span>
+      <p>Roughly 2,350 m of gain from where we sleep to where we walk, in one morning. Full hour-by-hour and the go/no-go on the Chimborazo tab.</p>
+      <p>Pickup around 08:00–08:30, at the Carrel refuge by mid-morning, walking by 10:30, on the bikes early afternoon, back in Riobamba around 15:00.</p>
+      <p>Go early. Mist typically closes in by early afternoon and an afternoon visit often means seeing nothing.</p>
+    </div>
+  </details>
+
+  <details class="day flex">
+    <summary>
+      <span class="num">8</span>
+      <span class="day-main">
+        <span class="title">Chimborazo day 2 — or first Baños day</span>
+        <span class="meta"><span>Sleep <b>Riobamba or Baños</b></span><span><b>Decide Day 7 pm</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag flexi">Flex</span>
+      <p>If Day 7 was clear and we got the mountain, move to Baños and take three full days there. If it was clouded out, stay in Riobamba and re-roll.</p>
+      <p>Riobamba → Baños is about 2 hours, buses frequent. Full decision rule — weather and body — on the Chimborazo tab.</p>
+    </div>
+  </details>
+
+  <details class="day flex">
+    <summary>
+      <span class="num">9</span>
+      <span class="day-main">
+        <span class="title">Baños</span>
+        <span class="meta"><span>Sleep <b>Baños · 1,800 m</b></span><span><b>Waterfall route</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <p>Bike the Ruta de las Cascadas downhill to Río Verde and Pailón del Diablo. This is the standout day here. Hot springs in the evening.</p>
+      <p>If Day 8 went to Chimborazo, this is the transfer day instead.</p>
+    </div>
+  </details>
+
+  <details class="day flex">
+    <summary>
+      <span class="num">10</span>
+      <span class="day-main">
+        <span class="title">Baños</span>
+        <span class="meta"><span>Sleep <b>Baños or Quito</b></span><span><b>Open</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <p>Canyoning, rafting on the Pastaza, Casa del Árbol, or nothing at all.</p>
+      <p class="gate">Gate: if the flight home leaves before roughly 13:00, this night is in Quito, not Baños. See the departure maths on the Transport tab before booking anything here.</p>
+    </div>
+  </details>
+
+  <details class="day">
+    <summary>
+      <span class="num">11</span>
+      <span class="day-main">
+        <span class="title">Baños → Quito, fly home</span>
+        <span class="meta"><span>Transit <b>5–6h</b></span></span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="dbody">
+      <span class="tag bus">Bus</span>
+      <p>Baños → Quitumbe is about 3.5–4 hours, then Quitumbe → airport another 60–90 minutes, then three hours for an international check-in. That is a nine-hour chain. Tababela sits well east of the city and the transfer is longer than people expect.</p>
+    </div>
+  </details>
+
+</section>
+
+<!-- ================= TRANSPORT ================= -->
+<section id="s2">
+
+  <div class="alertband">
+    <b>Check before every travel day</b>
+    <p>A state of emergency has been in force across the provinces this route crosses — Pichincha, Cotopaxi, Chimborazo and Tungurahua — with checkpoints and roadblocks that can reroute intercity buses at short notice. The 2025 national strike closed highland roads in Chimborazo and Cotopaxi for weeks at a time; the whole itinerary is one-way and bus-dependent with no alternate.</p>
+    <p>Live road status: ecu911.gob.ec/consulta-de-vias — bookmark it and look the night before we move.</p>
+  </div>
+
+  <div class="block">
+    <h2>Every leg</h2>
+    <p class="sub">Times are traveller and operator reported. Fares are older figures — the transport authority raised interprovincial fares by 25% for 2026, so add roughly a quarter and treat everything below as indicative.</p>
+
+    <div class="leg">
+      <div class="route">Airport → Quitumbe terminal <span class="dayref">Day 1</span></div>
+      <div class="facts"><span><b>60–90 min</b></span><span><b>$2</b> bus</span><span>runs approx <b>05:30–22:00</b></span></div>
+      <p class="how">COSIBO city bus from outside the arrivals hall — walk right past the taxi rank. The old $8 Aeroservicios shuttle no longer runs, so ignore guides that still list it.</p>
+      <p class="how">After the last bus, or with heavy bags: official airport taxi at a posted flat rate, around $25–35 to the city. Uber operates too.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Quitumbe → Latacunga <span class="dayref">Day 1</span></div>
+      <div class="facts"><span><b>~2h</b></span><span>every <b>10–30 min</b></span><span>~$3</span></div>
+      <p class="how">Buy at the window; no reservation needed at this frequency. Schedules and cooperatives by destination: terminal-quitumbe.com</p>
+      <p class="how"><b>Bag drop.</b> We are not staying in Latacunga on Day 1 — arrange the storage handover with the hostel in advance and allow an hour between buses for the detour from the terminal.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Latacunga → Sigchos <span class="dayref">Day 1</span></div>
+      <div class="facts"><span><b>1.5–2h</b></span><span>05:00 · 06:00 · 08:00 · 09:30 then ~hourly</span><span>~$3.30</span></div>
+      <p class="how">The bus climbs over passes well above Sigchos itself before dropping in. Confirm the last useful departure the moment we reach the terminal — this is the leg that decides whether Day 1 works.</p>
+      <p class="how">Fallback if we miss it: sleep in Latacunga, take the 06:00 or 08:00 on Day 2, start walking around 10:00. Costs the early start, not the day.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Quilotoa → Latacunga <span class="dayref">Day 6</span></div>
+      <div class="facts"><span><b>2–2.5h</b></span><span>frequent</span><span>~$3</span></div>
+      <p class="how">Some services run via Zumbahua with a change; ask at the Quilotoa hostel the night before which is going direct.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Latacunga → Riobamba <span class="dayref">Day 6</span></div>
+      <div class="facts"><span><b>1.5–2h</b></span><span>frequent</span></div>
+      <p class="how">Collect the stored bags between the two buses. Budget an hour of slack at Latacunga for the handover.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Riobamba → Chimborazo reserve <span class="dayref">Day 7</span></div>
+      <div class="facts"><span><b>~1h</b> each way</span><span>operator van</span></div>
+      <p class="how">Included in the hike-and-bike tour: hotel pickup, van to the Carrel refuge, and the return from San Juan after lunch. Bikes travel in the support vehicle both ways — nothing for us to hire, collect or return.</p>
+      <p class="how">Independent fallback: taxi from Riobamba to the parking area, around $35 round trip, or a Guaranda-bound bus to the signed turnoff. Only useful for the walk, not the ride.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Riobamba → Baños <span class="dayref">Day 8 or 9</span></div>
+      <div class="facts"><span><b>~2h</b></span><span>frequent</span></div>
+      <p class="how">Runs via Ambato on most services. Book nothing in advance; this is the most flexible leg in the plan and that is what makes the flex block work.</p>
+    </div>
+
+    <div class="leg">
+      <div class="route">Baños → Quitumbe → Airport <span class="dayref">Day 11</span></div>
+      <div class="facts"><span><b>3.5–4h</b> + <b>60–90 min</b></span><span>book ahead</span></div>
+      <p class="how">Cooperativa Baños runs the route and sells online at cooperativabanos.com.ec. General online booking: enbusecuador.com. This is the one leg worth holding a seat on.</p>
+      <p class="how"><b>Departure maths.</b> Work backwards: three hours before the flight at the airport, 90 minutes from Quitumbe, four hours from Baños, plus an hour of slack. Roughly nine hours. A 13:00 flight means leaving Baños at 04:00. Anything earlier and we sleep in Quito on Day 10.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>The bike road</h2>
+    <p class="note">The beginner descent runs 8 km of dirt then about 29 km of asphalt down to San Juan, on the Calpi–San Juan–El Arenal highway. That road has been in poor condition for years — local reporting counted more than 200 potholes on the Calpi–San Juan stretch — and resurfacing was announced in May 2026 with partial one- and two-lane closures between 08:00 and 17:00. The transport ministry posted further asphalt repairs on the same stretch in July 2026.</p>
+    <p class="note">Twenty-nine kilometres of descent sharing a coned-off lane with interprovincial buses is a different activity from the one the tour descriptions sell. Ask the operator what the paved section looks like right now, and take the answer seriously — the shorter dirt-only option with a van pickup is a fine outcome.</p>
+  </div>
+
+</section>
+
+<!-- ================= STAY ================= -->
+<section id="s3">
+
+  <div class="block">
+    <h2>Ten nights</h2>
+    <p class="sub">Book now means September fills and there is no second option in these villages. Hold means don't book until the flex block resolves.</p>
+
+    <div class="night">
+      <div class="top"><span class="n">Night 1</span><span class="place">Sigchos · 2,850 m</span><span class="status lock">Book now</span></div>
+      <p class="det">New — replaces the Latacunga night. Small town, limited beds, so book rather than turn up. Confirm they'll hold a late arrival, since we're coming straight off two buses.</p>
+      <p class="alts">Fallback: a Latacunga bed if the flight lands late. Keep that reservation refundable rather than skipping it entirely.</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Night 2</span><span class="place">Isinliví — Casa Pájaro Azul</span><span class="status lock">Book now</span></div>
+      <p class="det">Family-run guesthouse in Isinliví — closer to what we actually want out of the Loop than a lodge. Confirm whether dinner and breakfast are included; most Isinliví places do half board because there's nowhere else to eat.</p>
+      <p class="alts">Alternates in the same village: Llullu Llama Mountain Lodge (bigger, spa, the default choice) and Hostal Taita Cristobal (simpler, cheaper).</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Nights 3–4</span><span class="place">Chugchilán · 3,200 m</span><span class="status lock">Book now</span></div>
+      <p class="det">Two consecutive nights, including the rest day. The Black Sheep Inn sits just outside the village with woodstoves, sauna and hot tub, and rates that include meals — but it's the least family-run option on the route.</p>
+      <p class="alts">More in keeping with the rest: Hostal Cloud Forest and Hostal El Vaquero, both in the village, both cheaper. Worth a look before defaulting to the Inn.</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Night 5</span><span class="place">Quilotoa village · 3,900 m</span><span class="status lock">Book now</span></div>
+      <p class="det">Fewer rooms, higher prices and genuinely cold. Hostal Chukirawa sits in front of the mirador and has heaters in the rooms. Confirm heating or blanket count in writing.</p>
+      <p class="alts">Alternates: Runa Wasi Quilotoa, Martita's House, Cabañas Quilotoa.</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Nights 6–7</span><span class="place">Riobamba · 2,750 m</span><span class="status lock">Book now</span></div>
+      <p class="det">Two nights either side of the Chimborazo day. Pick somewhere the operator will collect from at 08:00 and give them the address when we book the tour.</p>
+      <p class="alts"><b>Higher option for night 6:</b> Chimborazo Lodge (Estrella del Chimborazo) or Casa Cóndor at Pulingui, both around 4,000 m inside the reserve, heated, half board. Better acclimatisation and a better night — but no town, no re-roll base, and the operator has to collect from out there. Trade flexibility for altitude only if Chimborazo is the thing we most want.</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Night 8</span><span class="place">Riobamba or Baños</span><span class="status hold">Hold</span></div>
+      <p class="det">The whole flex block depends on this night being unbooked. Decide on the evening of Day 7 and book that night or the next morning.</p>
+      <p class="alts">If we book anything here in advance, the flex block is decoration.</p>
+    </div>
+
+    <div class="night">
+      <div class="top"><span class="n">Nights 9–10</span><span class="place">Baños · 1,800 m</span><span class="status open">Open</span></div>
+      <p class="det">Large supply, easy to book a few days out. Night 10 may need to be Quito instead — see the departure maths on the Transport tab.</p>
+      <p class="alts">Book refundable or book late. This end of the trip should stay soft.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Splitting it</h2>
+    <p class="note">Whoever books a night puts the confirmation in the shared thread the same day, with the address and phone number. Nothing lives only in one person's inbox — half the Loop has no signal and the other half has no wifi.</p>
+    <p class="note">Screenshot the Loop confirmations before Day 2. That's the stretch where we can't look anything up.</p>
+  </div>
+
+</section>
+
+<!-- ================= CHIMBORAZO ================= -->
+<section id="s4">
+
+  <div class="block">
+    <h2>How the day runs</h2>
+    <p class="sub">Composite of what Riobamba operators publish. Confirm the exact version when we book.</p>
+
+    <div class="rule">
+      <span class="if">08:00–08:30 · Hotel pickup</span>
+      <span class="then">Van from Riobamba, about an hour to the reserve. Register at the control point on the way in — everyone entering has to.</span>
+    </div>
+    <div class="rule">
+      <span class="if">~10:00 · Carrel refuge, 4,850 m</span>
+      <span class="then">Drive right to the parking area. Toilets and a café here. This is where the bikes and the support vehicle wait all day.</span>
+    </div>
+    <div class="rule">
+      <span class="if">10:30 · Walk to Whymper, 5,030–5,060 m</span>
+      <span class="then">About 1 km on a marked stony path, 45 minutes to an hour. Taxing at that altitude, not technical, no gear beyond warm layers.</span>
+    </div>
+    <div class="rule">
+      <span class="if">Optional · Condor Cocha, ~5,100 m</span>
+      <span class="then">Ten minutes further on the short version, or 1.5–2 hours for the longer loop. Decide this at Whymper based on how we're actually doing, not at breakfast.</span>
+    </div>
+    <div class="rule">
+      <span class="if">~13:00 · Back at Carrel, gear up</span>
+      <span class="then">Helmet, elbow and knee pads, safety briefing and a test ride on the flat before anyone commits to the descent.</span>
+    </div>
+    <div class="rule">
+      <span class="if">13:30 · Descend to San Juan</span>
+      <span class="then">8 km dirt switchbacks then paved road, 4,850 m down to roughly 2,900–3,200 m. No pedalling required. Support vehicle stays with the group.</span>
+    </div>
+    <div class="rule">
+      <span class="if">~14:30 · Lunch in San Juan, van back</span>
+      <span class="then">Back in Riobamba around 15:00. Bikes go home in the van; nothing for us to return.</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Go / no-go</h2>
+    <p class="sub">Run this twice: the evening of Day 6, and again at the Carrel refuge before we start walking. Either of us can call it off for both of us, no negotiation.</p>
+
+    <div class="rule stop">
+      <span class="if">Headache that doesn't clear with water and rest</span>
+      <span class="then">Don't go up. This is the one symptom that reliably precedes the bad version.</span>
+      <span class="res">Stand down</span>
+    </div>
+    <div class="rule stop">
+      <span class="if">Nausea, dizziness, or a bad night's sleep with breathlessness</span>
+      <span class="then">Stand down and re-roll tomorrow. Riobamba is a fine place to lose a day.</span>
+      <span class="res">Stand down</span>
+    </div>
+    <div class="rule stop">
+      <span class="if">Symptoms appear on the walk above Carrel</span>
+      <span class="then">Turn around immediately and descend to the van. Descent is the treatment; there is no shelter to wait it out in up there.</span>
+      <span class="res">Turn around</span>
+    </div>
+    <div class="rule">
+      <span class="if">Both of us clear, weather clear</span>
+      <span class="then">Walk to Whymper. Reassess there before adding Condor Cocha — the extension is optional and the mountain isn't going anywhere.</span>
+      <span class="res">Go</span>
+    </div>
+    <div class="rule">
+      <span class="if">One of us clear, one not</span>
+      <span class="then">The one who's fine can still do the day; the one who isn't stays low. Don't split by pushing someone up the hill.</span>
+      <span class="res">Split</span>
+    </div>
+    <p class="note" style="margin-top:16px">Neither of us has been at 5,000 m before. Day 7 gains roughly 2,350 m from where we sleep, in one morning, then adds a long descent in windchill. The Loop nights and the rest day are what make that reasonable — they don't make symptoms negotiable.</p>
+  </div>
+
+  <div class="block">
+    <h2>What Day 8 becomes</h2>
+    <p class="sub">Work this out on the evening of Day 7.</p>
+
+    <div class="rule">
+      <span class="if">Day 7 was clear, we saw the mountain</span>
+      <span class="then">Chimborazo is done. Move to Baños on Day 8 and take three full days there.</span>
+      <span class="res">Chimborazo 1 · Baños 3</span>
+    </div>
+    <div class="rule">
+      <span class="if">Day 7 was clouded out or cut short</span>
+      <span class="then">Stay in Riobamba, re-roll on Day 8, then Baños for Days 9–10.</span>
+      <span class="res">Chimborazo 2 · Baños 2</span>
+    </div>
+    <div class="rule">
+      <span class="if">Day 7 was clear and we want more mountain</span>
+      <span class="then">Use Day 8 for the guided Whymper-to-Chamonix-Needles walk with the descent to La Chorrera. A full day on foot, and only if both of us handled Day 7 comfortably.</span>
+      <span class="res">Chimborazo 2 · Baños 2</span>
+    </div>
+    <div class="rule">
+      <span class="if">Either of us felt altitude on Day 7</span>
+      <span class="then">Go to Baños. It sits around 1,800 m and descending is the fix. Don't spend Day 8 at height to salvage a plan.</span>
+      <span class="res">Chimborazo 1 · Baños 3</span>
+    </div>
+    <div class="rule">
+      <span class="if">Forecast is bad for several days</span>
+      <span class="then">Cut losses. Baños early, add a third day there or a day trip out of it. Some operators will collect from Baños for a Chimborazo day trip at extra cost — ask before writing it off.</span>
+      <span class="res">Chimborazo 1 · Baños 3</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Ask the operators</h2>
+    <p class="sub">Contact two or three, compare the answers, then book. Julio Verne Travel runs the classic Riobamba hike-and-bike with a beginner and an advanced route; Chimborazo Tours Ecuador and Ecuador Adventures Trip both publish day tours around $65 per person with a two-person minimum.</p>
+
+    <div class="ask"><span class="q">01</span><span>Which bike route are we on — the dirt-and-paved beginner route, or the technical off-road one? Confirm in writing that it's the former.</span></div>
+    <div class="ask"><span class="q">02</span><span>What condition is the paved section to San Juan in right now, given the resurfacing works? Is there a shorter dirt-only option with a van pickup?</span></div>
+    <div class="ask"><span class="q">03</span><span>Support vehicle behind the group the whole way, or meeting us at points?</span></div>
+    <div class="ask"><span class="q">04</span><span>Helmet, elbow and knee pads included? Gloves? Any of it optional?</span></div>
+    <div class="ask"><span class="q">05</span><span>Guide speaks English? Has the guide turned a group around for altitude before, and what's their threshold?</span></div>
+    <div class="ask"><span class="q">06</span><span>If one of us stops at Whymper and one continues, how does that work with a single guide?</span></div>
+    <div class="ask"><span class="q">07</span><span>Is the Carrel road open and normal this week? Any reserve restrictions?</span></div>
+    <div class="ask"><span class="q">08</span><span>If we cancel the morning of for weather or altitude, what happens to the money and can we re-book for the next day?</span></div>
+    <div class="ask"><span class="q">09</span><span>Do you collect from Baños, or from Chimborazo Lodge / Casa Cóndor, and what does that cost?</span></div>
+  </div>
+
+  <div class="block">
+    <h2>Options by effort</h2>
+    <p class="sub">Everything below the summit is walking. No technical gear anywhere on this list except the last line.</p>
+
+    <div class="opt">
+      <span class="alt">4,850 m</span>
+      <span class="who">
+        <span class="nm">Drive to Carrel refuge</span>
+        <span class="ef">No walking beyond the parking area. Paved road, no 4x4 needed. Toilets and a café.</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">5,050 m</span>
+      <span class="who">
+        <span class="nm">Carrel → Whymper refuge</span>
+        <span class="ef">About an hour, roughly 200 m of gain on a marked path. Taxing at that altitude, not technical.</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">~5,100 m</span>
+      <span class="who">
+        <span class="nm">On to Condor Cocha lagoon</span>
+        <span class="ef">Ten minutes beyond Whymper on the short version, or 1.5–2 hours for the longer one.</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">~5,250 m</span>
+      <span class="who">
+        <span class="nm">Whymper → Chamonix Needles</span>
+        <span class="ef">Around 2 hours beyond Whymper. Scree and rock, no scrambling. Operators want helmet and poles, and good acclimatisation.</span>
+        <span class="gd">Guided · Day 8 only</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">Full day</span>
+      <span class="who">
+        <span class="nm">Needles + descent to La Chorrera</span>
+        <span class="ef">The above, then 3–4 hours descending to about 3,900 m and a pickup. The best walking day on this mountain.</span>
+        <span class="gd">Guided</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">37 km</span>
+      <span class="who">
+        <span class="nm">Downhill bike — beginner route</span>
+        <span class="ef">About 8 km dirt then 29 km paved, from 4,850 m down to San Juan. Support vehicle follows, safety briefing and test ride first. Fits confident riders who aren't mountain bikers.</span>
+        <span class="gd">Guided tour · around $65–70 pp</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">34 km</span>
+      <span class="who">
+        <span class="nm">Downhill bike — advanced route</span>
+        <span class="ef">Roughly 20 km off road. Singletrack, sand, gravel, tight turns, some uphill. Experienced mountain bikers only.</span>
+        <span class="gd">Not us</span>
+      </span>
+    </div>
+    <div class="opt">
+      <span class="alt">6,263 m</span>
+      <span class="who">
+        <span class="nm">Summit</span>
+        <span class="ef">Two days, glacier route, crampons and ice axe, overnight start. Operators want a week of Andean acclimatisation first. Not compatible with this trip.</span>
+        <span class="gd">Guide mandatory</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Costs &amp; access</h2>
+    <p class="sub">Confirm all three with a Riobamba operator before Day 7.</p>
+    <div class="rule">
+      <span class="if">Reserve entry</span>
+      <span class="then">Older operator pages quote about $6 for foreigners and $2 for Ecuadorians. Ecuadorian reporting in 2025 said reserve access is officially free for nationals and foreigners alike. Small money either way — carry small bills and don't be surprised by either answer.</span>
+    </div>
+    <div class="rule">
+      <span class="if">Whymper refuge</span>
+      <span class="then">Reported closed and derelict as accommodation, with water and infrastructure problems, though tours still stop there. Treat it as a waypoint with a toilet, not shelter and not a bail-out point if the weather turns.</span>
+    </div>
+    <div class="rule">
+      <span class="if">Getting up there independently</span>
+      <span class="then">Taxi from Riobamba to the parking area around $35 round trip, or hourly Guaranda-bound buses will drop you at the signed turnoff. Fine for the walk; the bike day needs an operator.</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ================= PREP ================= -->
+<section id="s5">
+
+  <div class="listhead">
+    <h2>Book now</h2>
+    <p class="sub">Nothing below waits. Owner tags are a starting split — swap freely, just say so.</p>
+  </div>
+  <div class="listwrap">
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Ticket the flights, both of us on the same itinerary</span><span class="wy">Everything else in this doc is downstream of the arrival and departure times. Nothing here is real until these are booked.</span><span class="foot"><span class="wn">First</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Share arrival and departure times in the thread</span><span class="wy">The Day 1 and Day 10 gates only work if we both know the actual times, not roughly.</span><span class="foot"><span class="wn">Same day</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book a Sigchos bed for night 1</span><span class="wy">Small town, few options. Confirm they'll hold a late arrival off two buses.</span><span class="foot"><span class="wn">Now</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Arrange Latacunga bag storage without a room booking</span><span class="wy">We pass through on Day 1 and again on Day 6 but don't sleep there. Confirm they'll take bags from non-guests and what it costs.</span><span class="foot"><span class="wn">Now</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book Casa Pájaro Azul, Isinliví</span><span class="wy">Ask whether dinner and breakfast are included — most Isinliví places do half board because there's nowhere else to eat.</span><span class="foot"><span class="wn">Now</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book Chugchilán, two nights</span><span class="wy">Nights 3 and 4, including the rest day. Compare Cloud Forest and El Vaquero against the Black Sheep Inn before defaulting.</span><span class="foot"><span class="wn">Now</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book Quilotoa rim, night 5</span><span class="wy">Limited rooms, pricier than the rest. Confirm heating or blanket count in writing.</span><span class="foot"><span class="wn">Now</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book Riobamba nights 6–7, leave night 8 open</span><span class="wy">The flex block only works if we are not locked into a bed on night 8. Decide first whether night 6 is Riobamba or the 4,000 m lodge.</span><span class="foot"><span class="wn">Now</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Travel insurance covering trekking above 5,000 m</span><span class="wy">Standard policies often cap below that, and we are above it on foot and on a bike.</span><span class="foot"><span class="wn">Now</span><span class="owner">Both</span></span></span></label>
+  </div>
+
+  <div class="listhead">
+    <h2>Two to three weeks out</h2>
+    <p class="sub">Operators, confirmations, contingencies.</p>
+  </div>
+  <div class="listwrap">
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Contact 2–3 Riobamba hike-and-bike operators</span><span class="wy">Work through the nine questions on the Chimborazo tab. Compare answers before booking.</span><span class="foot"><span class="wn">2–3 weeks out</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Book the Chimborazo day, ask about next-day rebooking</span><span class="wy">Weather cancellation terms matter more than price here.</span><span class="foot"><span class="wn">2 weeks out</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Confirm the Carrel road and reserve access</span><span class="wy">Road works and refuge disputes have both come and gone.</span><span class="foot"><span class="wn">1–2 weeks out</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Hold seats Baños → Quitumbe for Day 11</span><span class="wy">The one leg worth reserving. Cooperativa Baños sells online.</span><span class="foot"><span class="wn">1 week out</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Bookmark the ECU 911 road check</span><span class="wy">Look at it the night before every travel day.</span><span class="foot"><span class="wn">Now</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Agree the drop order if the flights cost us days</span><span class="wy">Third Baños day, then the Chimborazo re-roll, then the rest day. Decide before we go, not at 2,750 m.</span><span class="foot"><span class="wn">2 weeks out</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Screenshot every confirmation, both phones</span><span class="wy">No signal on the Loop, no wifi in the hostels.</span><span class="foot"><span class="wn">Week of</span><span class="owner">Both</span></span></span></label>
+  </div>
+
+  <div class="listhead">
+    <h2>Health &amp; altitude</h2>
+    <p class="sub">Both of us, separately. Neither of us has been this high before.</p>
+  </div>
+  <div class="listwrap">
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Talk to a doctor about altitude, both of us</span><span class="wy">First time at 5,000 m for both. Worth a conversation about whether medication makes sense and what to watch for.</span><span class="foot"><span class="wn">3–4 weeks out</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Pack the oximeter and agree when we use it</span><span class="wy">Morning resting readings from Day 3, and again at Riobamba on the evening of Day 6. A number we both look at is harder to argue with than how we say we feel.</span><span class="foot"><span class="wn">Packing</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Read the go / no-go rules out loud to each other</span><span class="wy">Before Day 7, not during it. Either of us can call it off for both.</span><span class="foot"><span class="wn">Day 6 evening</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Sun protection for 5,000 m</span><span class="wy">High factor, lip balm, real sunglasses. Thin air and snow reflection at the equator.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Blister kit and tape</span><span class="wy">Loop descents end more days than altitude does.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">First aid kit and regular medication in the trek bag</span><span class="wy">The main bags are in Latacunga for five days.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Friend</span></span></span></label>
+  </div>
+
+  <div class="listhead">
+    <h2>Pack</h2>
+    <p class="sub">Trek bag only goes on the Loop. Everything else waits in Latacunga.</p>
+  </div>
+  <div class="listwrap">
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Break in footwear</span><span class="wy">Loop descents are not where you want to find a hot spot. Ultra Raptors cover everything in this plan.</span><span class="foot"><span class="wn">Starting now</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Windproof shell and full-finger gloves</span><span class="wy">Not for the hiking — for the bike. We descend 1,700 m fast into windchill from 4,850 m.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Warm layers for two cold nights</span><span class="wy">Crater rim at 3,900 m and Chugchilán at 3,200 m. Woodstoves, not central heating.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Headlamps</span><span class="wy">Early starts, rim sunrise, and rural power that comes and goes.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Offline maps downloaded</span><span class="wy">Maps.me or AllTrails for the Loop. Signage is inconsistent.</span><span class="foot"><span class="wn">Before we go</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">This doc saved offline on both phones</span><span class="wy">Save as HTML, open in Safari or Chrome. No fonts or scripts load from the internet, so it works with no signal.</span><span class="foot"><span class="wn">Before we go</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">eSIM or local SIM sorted</span><span class="wy">Patchy on the Loop regardless, but needed for operators and buses everywhere else.</span><span class="foot"><span class="wn">Week of</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Small bills in dollars</span><span class="wy">Ecuador uses the dollar, but change for a $20 is scarce in villages and on buses.</span><span class="foot"><span class="wn">Airport</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Refillable water bottles</span><span class="wy">Hostels refill for a small charge; the Loop asks people not to bring plastic bottles.</span><span class="foot"><span class="wn">Packing</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Passport copies on both phones</span><span class="wy">Registration at the reserve, checkpoints, hostel check-ins.</span><span class="foot"><span class="wn">Week of</span><span class="owner">Both</span></span></span></label>
+  </div>
+
+  <div class="listhead">
+    <h2>On arrival &amp; in country</h2>
+    <p class="sub">From the airport onwards.</p>
+  </div>
+  <div class="listwrap">
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Check the time at Latacunga terminal against the Sigchos board</span><span class="wy">This is the Day 1 gate. If the last useful bus has gone, stop in Latacunga and don't force it.</span><span class="foot"><span class="wn">Day 1</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Hand over the bags and photograph them in storage</span><span class="wy">Five days, two bags, a hostel we're not staying at.</span><span class="foot"><span class="wn">Day 1</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Check the Chimborazo forecast</span><span class="wy">Mist closes in by early afternoon. The early start is the whole game.</span><span class="foot"><span class="wn">Day 6 evening</span><span class="owner">J</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Confirm operator pickup time and hotel address</span><span class="wy">Call or WhatsApp the day before. Pickups drift.</span><span class="foot"><span class="wn">Day 6 evening</span><span class="owner">Friend</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Check ECU 911 before each travel day</span><span class="wy">Days 1, 6, 8 and 11. Two minutes each time.</span><span class="foot"><span class="wn">Rolling</span><span class="owner">Both</span></span></span></label>
+    <label class="check"><input type="checkbox"><span class="txt"><span class="it">Decide Day 8 out loud, together</span><span class="wy">Weather first, then how we both actually feel. Book the night once decided.</span><span class="foot"><span class="wn">Day 7 evening</span><span class="owner">Both</span></span></span></label>
+  </div>
+
+</section>
+</div>
+
+<footer>
+  Altitudes: Sigchos 2,850 m · Isinliví 2,950 m · Chugchilán 3,200 m · Quilotoa rim 3,914 m · Riobamba 2,750 m · Baños 1,800 m, consistent across trekking guides and route descriptions. Daily high points are approximate where they fall between villages. Travel times, fares and bus departures are traveller- and operator-reported, 2022–2026, and predate the 2026 fare increase — re-confirm locally. Road, reserve and security conditions were current when this was written and are the first things to go stale.<br><br>
+  This file needs no internet: no web fonts, no scripts, no external anything. Checkbox ticks last until the page is reloaded.
+</footer>
+
+</body>
+</html>
