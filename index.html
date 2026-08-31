@@ -86,6 +86,14 @@
   #t1:checked ~ #s1,#t2:checked ~ #s2,#t3:checked ~ #s3,
   #t4:checked ~ #s4,#t5:checked ~ #s5{display:block}
 
+  .opts{margin:11px 0 0;border-top:1px solid var(--line);padding-top:9px}
+  .optlead{font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);margin:0 0 7px}
+  .lodge{display:block;margin:0 0 8px;font-size:13px;line-height:1.5;color:var(--ash-dim)}
+  .lodge:last-child{margin-bottom:0}
+  .lodge b{color:var(--ash);font-weight:700}
+  .lodge.picked b{color:var(--pajonal)}
+  .lodge .tick{font-family:var(--display);font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pajonal);margin-left:5px}
+
   /* ---------- option selector, no script ---------- */
   .optbox{position:relative}
   .optbox > input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
@@ -234,7 +242,7 @@
     /* every day card prints open */
     details.day > *{display:block !important}
     details.day > summary{list-style:none}
-    details.day,.block,.night,.leg,.rule,.check,.opt,.ask{page-break-inside:avoid}
+    details.day,.block,.night,.leg,.rule,.check,.opt,.lodge,.ask{page-break-inside:avoid}
     details.day.flex{background:none;border-left:3pt solid #8A6D0B}
     .dbody p.gate{border-left:2pt solid #9C3A18}
     .alertband{background:none;border:1pt solid #9C3A18;padding:10pt;margin:8pt 0}
@@ -964,9 +972,11 @@
   </div>
 
   <div class="block">
-    <h2>The bike road · Option A</h2>
-    <p class="note">The beginner descent runs 8 km of dirt then about 29 km of asphalt down to San Juan, on the Calpi–San Juan–El Arenal highway. That road has been in poor condition for years — local reporting counted more than 200 potholes on the Calpi–San Juan stretch — and resurfacing was announced in May 2026 with partial one- and two-lane closures between 08:00 and 17:00. The transport ministry posted further asphalt repairs on the same stretch in July 2026.</p>
-    <p class="note">Twenty-nine kilometres of descent sharing a coned-off lane with interprovincial buses is a different activity from the one the tour descriptions sell. Ask the operator what the paved section looks like right now, and take the answer seriously — the shorter dirt-only option with a van pickup is a fine outcome.</p>
+    <h2>Which bike route · Option A</h2>
+    <p class="note"><b>Route 1, and the reason is skill, not altitude.</b> By the 19th we are well acclimatised and that argument is settled. What acclimatisation does not do is teach you to ride loose volcanic scree. Between us: Papa Bear rides city roads in traffic weekly, Mama Bear less, and neither of us has ridden off road. Loose steep surfaces punish exactly the instincts road riding builds — braking hard, weight forward — and Route 2 opens with switchbacks and drops on ash and scree at 4,800 m, an hour from tarmac, with the support vehicle on the road rather than the trail. It is not a question of being fit or being game.</p>
+    <p class="note"><b>Route 1 is not a consolation prize.</b> Its first 8 km are dirt switchbacks from 4,850 m — real off-road descending, and the part of the day worth having. What we give up is 20 km of singletrack we do not have the hands for yet.</p>
+    <p class="note"><b>If we want to change this, the deadline is at home, not on the mountain.</b> Two weeks before departure is not enough to build technical skill, but it is enough to ride some loose gravel and find out honestly where we stand. If that goes well, ask the operator about switching — Andean Trails’ write-up notes the sandy section has a road bail-out, so the routes are not fully separate. Decide from evidence, not from how we feel at the trailhead.</p>
+    <p class="note"><b>Road condition, either way.</b> The paved 29 km runs on the Calpi–San Juan–El Arenal highway, in poor condition for years — local reporting counted more than 200 potholes on the Calpi–San Juan stretch. Resurfacing was announced in May 2026 with partial lane closures between 08:00 and 17:00, and further asphalt repairs were posted in July 2026. Descending 29 km in a coned-off lane beside interprovincial buses is a different activity from the one the brochures sell. Ask what it looks like now; the shorter dirt-only version with a van pickup is a fine outcome.</p>
   </div>
 
 
@@ -1020,43 +1030,68 @@
 <section id="s3">
 
   <div class="block">
-    <h2>Ten nights</h2>
-    <p class="sub">The first six are the same in every option and should be booked now — September fills and there is no second bed in these villages. The last four depend on A, B, C or D and should stay unbooked until the evening of the 17th.</p>
+    <h2>Eleven nights</h2>
+    <p class="sub">The Loop nights are the ones that matter — tiny villages, few beds, September fills. Options listed for each. Everything after the 17th depends on A, B, C or D and stays unbooked until we decide on the rim.</p>
 
     <div class="night">
       <div class="top"><span class="n">12 Sep</span><span class="place">Tababela · airport-side</span><span class="status lock">Book now</span></div>
-      <p class="det">Arrival night. Mama Bear clears around 20:00, which is too late to be worth chasing a connection anywhere, so the choice is a three-minute hop to a Tababela hotel or a 45-minute taxi into a city we leave at dawn. Take the hop. Confirm a late check-in and whether they run an airport shuttle.</p>
-      <p class="alts">Functional rather than charming, and that is the point — we are here to sleep. Cheaper Tababela guesthouses exist alongside the obvious airport hotel; worth ten minutes comparing, since we are back out here on the 22nd as well and could book both nights with the same place.</p>
+      <p class="det">Arrival night. Mama Bear clears around 20:00, too late to be worth chasing a connection anywhere, so the choice is a three-minute hop to a Tababela hotel or a 45-minute taxi into a city we leave at dawn. Take the hop. Confirm a late check-in and whether they run an airport shuttle.</p>
+      <p class="alts">We are back out here on the 22nd under A, C and D — worth asking the same place for both nights.</p>
+    </div>
 
     <div class="night">
       <div class="top"><span class="n">13 Sep</span><span class="place">Sigchos · 2,850 m</span><span class="status lock">Book now</span></div>
-      <p class="det">Small town, limited beds, so book rather than turn up. Confirm they will hold a late arrival, since we are coming straight off two buses.</p>
-      <p class="alts">Fallback: a Latacunga bed if the 13th collapses. Keep that reservation refundable rather than skipping it entirely.</p>
-    </div>
+      <p class="det">The trailhead town. Small, few beds, so book rather than turn up. Confirm they will hold a late arrival since we are coming off two buses.</p>
+      <div class="opts">
+        <p class="optlead">Three known options — it is a thin market</p>
+        <p class="lodge"><b>Hostería San José de Sigchos</b> — Country estate lower down the valley, gardens, quiet. The comfortable pick, and well suited to a first night at altitude.</p>
+        <p class="lodge"><b>Hostería La Estela</b> — English-speaking staff, breakfast included, bike rentals. Doubles from around $25. Hands out maps and trail advice.</p>
+        <p class="lodge"><b>Starlight Inn</b> — Cheapest of the three — rooms from about $14, breakfast, bike rentals. Also briefs hikers on the route.</p>
+      </div>
     </div>
 
     <div class="night">
-      <div class="top"><span class="n">14 Sep</span><span class="place">Isinliví — Taita Cristóbal</span><span class="status lock">Book now</span></div>
-      <p class="det">Family-run guesthouse in Isinliví — closer to what we actually want out of the Loop than a lodge. Confirm whether dinner and breakfast are included; most Isinliví places do half board because there's nowhere else to eat.</p>
-      <p class="alts">Alternates in the same village: Llullu Llama Mountain Lodge (bigger, spa, the default choice) and Hostal Taita Cristobal (simpler, cheaper).</p>
+      <div class="top"><span class="n">14 Sep</span><span class="place">Isinliví · 2,950 m</span><span class="status lock">Booked</span></div>
+      <p class="det">Taita Cristóbal is locked, cash on arrival — covered by the airport withdrawal. Isinliví is genuinely a two-house village, so this was the right bed to secure first.</p>
+      <div class="opts">
+        <p class="optlead">Only two places here, and I could not verify a third</p>
+        <p class="lodge picked"><b>Hostal Taita Cristóbal</b><span class="tick">Booked</span> — Indigenous family-run, panoramic valley views, Kichwa hospitality and home cooking. Next door to Llullu Llama. Cash on arrival.</p>
+        <p class="lodge"><b>Llullu Llama Mountain Lodge</b> — Restored 120-year-old farmhouse run by an Ecuadorian-Dutch couple. Dorms through to luxury chalets, jacuzzi, sauna, steam room, yoga, family-style dinners. Around $42. Sawdust toilets. The default choice and often full.</p>
+      </div>
     </div>
 
     <div class="night">
       <div class="top"><span class="n">15–16 Sep</span><span class="place">Chugchilán · 3,200 m</span><span class="status lock">Book now</span></div>
-      <p class="det">Two consecutive nights, including the rest day. The Black Sheep Inn sits just outside the village with woodstoves, sauna and hot tub, and rates that include meals — but it's the least family-run option on the route.</p>
-      <p class="alts">More in keeping with the rest: Hostal Cloud Forest and Hostal El Vaquero, both in the village, both cheaper. Worth a look before defaulting to the Inn.</p>
+      <p class="det">Two consecutive nights including the rest day — the only place on the Loop where we sit still for a full day. That argues for somewhere with something to do on the property.</p>
+      <p class="alts">Black Sheep Inn was contacted but never closed. Decide or move on.</p>
+      <div class="opts">
+        <p class="optlead">Five options, most in the village</p>
+        <p class="lodge"><b>The Black Sheep Inn</b> — Eco-lodge above the Toachi canyon. Sauna, hot tub, yoga room, zipline, wood stoves, three meals in. The most comfortable bed on the Loop. Priciest; vegetarian-only; composting toilets.</p>
+        <p class="lodge"><b>Hostal Mama Hilda</b> — Repeatedly called the best all-round value here. Family-style meals, cozy rooms, hot showers. Limited English at times. Quoted anywhere from $21pp to $53 a room — ask.</p>
+        <p class="lodge"><b>Hostal Cloud Forest</b> — North end of the village. About $15pp with big breakfast and dinner, veg/vegan/GF, lunch boxes $3, sauna and Turkish bath $3, game room, wood stove. Cash only.</p>
+        <p class="lodge"><b>Hostal El Vaquero</b> — On the Quilotoa road just outside the village. Best view of the five — over the canyon toward the crater — trail out the back, fire-heated sauna. Cold rooms, one stove, no shops nearby.</p>
+        <p class="lodge"><b>Hostal Doña Clarita</b> — Village homestay, $15pp including breakfast, dinner and unlimited tea. The most authentic and the most basic. Thin information available.</p>
+      </div>
     </div>
 
     <div class="night">
       <div class="top"><span class="n">17 Sep</span><span class="place">Quilotoa village · 3,900 m</span><span class="status lock">Book now</span></div>
-      <p class="det">Fewer rooms, higher prices and genuinely cold. Hostal Chukirawa sits in front of the mirador and has heaters in the rooms. Confirm heating or blanket count in writing.</p>
-      <p class="alts">Alternates: Runa Wasi Quilotoa, Martita's House, Cabañas Quilotoa.</p>
+      <p class="det">Highest, coldest, and by common agreement the weakest lodging on the Loop — guides say the hostels here disappoint after Isinliví and Chugchilán. We are here for sunrise, not the room. Confirm heating or blanket count in writing.</p>
+      <p class="alts">No ATM in the village. Bring the cash or check what they take.</p>
+      <div class="opts">
+        <p class="optlead">Four worth considering, plus overflow</p>
+        <p class="lodge"><b>Runa Wasi Quilotoa</b> — Five minutes’ walk from the rim, wood-burning stove in the room, private bathroom, hot water. Takes PayPal for a $2 surcharge, which matters where there is no ATM. Private rooms around $56. Food and hospitality rated only fair.</p>
+        <p class="lodge"><b>Hostería Alpaka Quilotoa</b> — On the main road, 550 m from the viewpoint — closest of the four. Dorm beds from about $15, restaurant, luggage storage, and they arrange guides, transport and horses.</p>
+        <p class="lodge"><b>Hostería Chukirawa</b> — Opposite the information office, 19 rooms, breakfast and dinner included, around $44 a double. The largest place in the village, so most likely to have space late.</p>
+        <p class="lodge"><b>Hotel Princesa Toa</b> — The highest standard in the village by some distance, and priced to match — around $100 a double.</p>
+        <p class="lodge"><b>Overflow</b> — Samay Kirutoa Lodge, Cabañas Quilotoa, Shalala Quilotoa and Martita’s House all exist if the above are full.</p>
+      </div>
     </div>
 
     <div class="night">
       <div class="top"><span class="n">18–19 Sep</span><span class="place">Riobamba · 2,750 m — A only</span><span class="status hold">Hold</span></div>
       <p class="det">Two nights either side of the Chimborazo day. Pick somewhere the operator will collect from at 08:00 and give them the address when we book the tour.</p>
-      <p class="alts"><b>Higher option for the 18th:</b> Chimborazo Lodge (Estrella del Chimborazo) or Casa Cóndor at Pulingui, both around 4,000 m inside the reserve, heated, half board. Better acclimatisation and a better night — but no town, no re-roll base, and the operator has to collect from out there. Trade flexibility for altitude only if Chimborazo is the thing we most want.</p>
+      <p class="alts"><b>Higher option for the 18th:</b> Chimborazo Lodge (Estrella del Chimborazo) or Casa Cóndor at Pulingui, both around 4,000 m inside the reserve, heated, half board. Better acclimatisation and a better night — but no town, no re-roll base, and the operator has to collect from out there.</p>
     </div>
 
     <div class="night">
@@ -1068,7 +1103,7 @@
     <div class="night">
       <div class="top"><span class="n">18 Sep</span><span class="place">Latacunga · 2,750 m — C only</span><span class="status hold">Hold</span></div>
       <p class="det">The night that makes Cotopaxi work. Staying at 2,750 m instead of dropping to Baños holds the acclimatisation for the 19th, and it puts us an hour from the park gate.</p>
-      <p class="alts">Likely the same hostel holding our bags, which makes the handover trivial. Ask when we arrange the storage whether they have rooms for the 18th.</p>
+      <p class="alts">Likely the same hostel holding our bags, which makes the handover trivial. Ask about rooms when we arrange the storage.</p>
     </div>
 
     <div class="night">
@@ -1080,8 +1115,16 @@
     <div class="night">
       <div class="top"><span class="n">21–22 Sep</span><span class="place">Quito or Tababela</span><span class="status open">Open</span></div>
       <p class="det"><b>B:</b> two nights in the centro or La Floresta, and a booked taxi to Tababela at about 01:15 on the 23rd. <b>A, C and D:</b> one night airport-side in Tababela on the 22nd, alarm around 01:30.</p>
-      <p class="alts">Tababela hotels are functional and near-empty of charm, and that is the point. Confirm they run a shuttle at 01:30 or that reception can call a cab — do not assume either.</p>
+      <p class="alts">Confirm they run a shuttle at 01:30 or that reception can call a cab — do not assume either.</p>
     </div>
+
+  </div>
+
+  <div class="block">
+    <h2>Before booking any of these</h2>
+    <p class="note">Prices above come from reviews and listings spanning several years and disagree with each other by two to three times in places. Treat every figure as indicative and confirm by email or WhatsApp.</p>
+    <p class="note">Nearly everything on the Loop includes breakfast and dinner, because there is almost nowhere else to eat. Confirm half board is in the rate rather than assuming it.</p>
+    <p class="note">Most of these are cash only and there is no ATM past Latacunga.</p>
   </div>
 
   <div class="block">
@@ -1097,7 +1140,7 @@
 
   <div class="bandnote">
     <b>Options A and C</b>
-    The hour-by-hour, the operator questions and the route options below are Chimborazo, which is Option A on the 19th. <b>The go / no-go rules apply equally to Cotopaxi under Option C</b> — 4,864 m is not meaningfully safer than 5,100 m, and the walk to the José Rivas refuge is the same kind of effort on the same kind of ground. Under B and D we are in Baños by the 19th and none of this happens.
+    The hour-by-hour, the operator questions and the route options below are Chimborazo, which is Option A on the 19th. <b>The go / no-go rules apply equally to Cotopaxi under Option C</b> — 4,864 m is not meaningfully safer than 5,100 m, and the walk to the José Rivas refuge is the same kind of effort on the same kind of ground. Under C we are a day fresher off the rim, which helps. Under B and D we are in Baños by the 19th and none of this happens.
   </div>
 
   <div class="block">
@@ -1163,7 +1206,8 @@
       <span class="then">The one who's fine can still do the day; the one who isn't stays low. Don't split by pushing someone up the hill.</span>
       <span class="res">Split</span>
     </div>
-    <p class="note" style="margin-top:16px">Neither of us has been near 5,000 m before. Under A the 19th gains roughly 2,350 m from where we sleep, in one morning, then adds a long descent in windchill. Under C it is about 2,100 m to 4,864 m. The Loop nights and the rest day are what make either reasonable — they do not make symptoms negotiable.</p>
+    <p class="note" style="margin-top:16px">We arrive at this day well prepared, and the plan should say so. By the morning of the 19th we will have slept six nights above 2,400 m, three at or above 3,200 m, one at 3,900 m, with a rest day built in at Chugchilán. That is real preexposure, not a cold start, and the expectation is that both of us are fine.</p>
+    <p class="note">The rules above are not a prediction, they are a pre-commitment. 5,100 m is still about 1,200 m higher than we will ever have slept, and acclimatisation protects roughly to where you have been. The point of deciding this in a hotel room on the 18th is that at 5,000 m, with the tour paid for and the guide waiting, nobody makes this call well.</p>
     <p class="note">One real difference: A has a re-roll day on the 20th and C does not. Under C, if the 19th goes badly we are on the bus to Baños regardless, which is the right treatment anyway.</p>
   </div>
 
@@ -1202,7 +1246,7 @@
     <h2>Ask the operators</h2>
     <p class="sub">Contact two or three, compare the answers, then book. Julio Verne Travel runs the classic Riobamba hike-and-bike with a beginner and an advanced route; Chimborazo Tours Ecuador and Ecuador Adventures Trip both publish day tours around $65 per person with a two-person minimum.</p>
 
-    <div class="ask"><span class="q">01</span><span>Which bike route are we on — the dirt-and-paved beginner route, or the technical off-road one? Confirm in writing that it's the former.</span></div>
+    <div class="ask"><span class="q">01</span><span>Confirm in writing we are on Route 1, the dirt-and-paved route. Also ask: is the opening 8 km off Carrel the same on both routes, and can we switch on the day if the first section goes well?</span></div>
     <div class="ask"><span class="q">02</span><span>What condition is the paved section to San Juan in right now, given the resurfacing works? Is there a shorter dirt-only option with a van pickup?</span></div>
     <div class="ask"><span class="q">03</span><span>Support vehicle behind the group the whole way, or meeting us at points?</span></div>
     <div class="ask"><span class="q">04</span><span>Helmet, elbow and knee pads included? Gloves? Any of it optional?</span></div>
@@ -1257,17 +1301,17 @@
     <div class="opt">
       <span class="alt">37 km</span>
       <span class="who">
-        <span class="nm">Downhill bike — beginner route</span>
-        <span class="ef">About 8 km dirt then 29 km paved, from 4,850 m down to San Juan. Support vehicle follows, safety briefing and test ride first. Fits confident riders who aren't mountain bikers.</span>
-        <span class="gd">Guided tour · around $65–70 pp</span>
+        <span class="nm">Downhill bike — Route 1</span>
+        <span class="ef">About 8 km of dirt switchbacks off Carrel, then 29 km paved to San Juan. Note the first 8 km is genuine off-road descending from 4,850 m — this is not a paved-only day, and it is where the ride actually is. Support vehicle follows, briefing and test ride first.</span>
+        <span class="gd">Our route · around $65–70 pp</span>
       </span>
     </div>
     <div class="opt">
       <span class="alt">34 km</span>
       <span class="who">
-        <span class="nm">Downhill bike — advanced route</span>
-        <span class="ef">Roughly 20 km off road. Singletrack, sand, gravel, tight turns, some uphill. Experienced mountain bikers only.</span>
-        <span class="gd">Not us</span>
+        <span class="nm">Downhill bike — Route 2</span>
+        <span class="ef">34 km, roughly 20 km off road: singletrack, steeper descents, a sand-and-gravel mix and a few uphills at over 4,000 m. Operators describe the opening as rocky trail turning to loose volcanic ash and scree with sharp switchbacks and steep drops, and list body armour as essential. Rated for experienced mountain bikers.</span>
+        <span class="gd">Skill, not nerve · see below</span>
       </span>
     </div>
     <div class="opt">
