@@ -109,11 +109,14 @@ to the metre.
   softer framing.
 - `p.gate` inside a day card marks a decision point with a hard condition.
   These are load-bearing; don't soften them into prose.
-- `.status` pills on the Stay tab: `lock` (book now, or already "Booked"),
+- `.status` pills on the Stay tab: `lock` (a night that has to be settled now —
+  "Book now", "Tentative" for one held on free cancellation, "Booked" once done),
   `hold` (must stay unbooked), `open` (book late). The three `hold` nights after
   the 17th are what make the four options function — never change them to `lock`.
 - `.opts` / `.lodge` blocks list the real lodging choices for a night, with
-  `.lodge.picked` plus a `.tick` for one that's booked.
+  `.lodge.picked` plus a `.tick` — "Booked" when confirmed, "Held" when it is a
+  reservation we can still cancel. A held bed needs its cancellation deadline in
+  the `.alts` line; that date is the real decision point.
 - Checklist owner tags are `Papa Bear`, `Mama Bear`, `Both`.
 - A print stylesheet lives at the end of the `<style>` block: it forces every tab
   and every day card open, one tab per page, in ink-friendly colours. Any new
